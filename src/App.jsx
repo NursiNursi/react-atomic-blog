@@ -9,7 +9,7 @@ function createRandomPost() {
 }
 
 function App() {
-  const [posts, setposts] = useState(() =>
+  const [posts, setPosts] = useState(() =>
     Array.from({ length: 32 }, () => createRandomPost())
   );
   const [searchQuery, setSearchQuery] = useState("");
@@ -23,10 +23,15 @@ function App() {
         )
       : posts;
 
+  function handleClearPosts() {
+    setPosts([]);
+  }
+
   return (
     <section>
       <Header
         posts={searchedPosts}
+        onClearPosts={handleClearPosts}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
       />
@@ -35,20 +40,20 @@ function App() {
   );
 }
 
-function Header({ posts, searchQuery, setSearchQuery }) {
+function Header({ posts, onClearPosts, searchQuery, setSearchQuery }) {
   return (
     <header>
       <h1>
         <span>⚛️</span>The Atomic Blog
       </h1>
       <div>
-        <p>🚀 {posts.length} atomic posts found</p>;
+        <p>🚀 {posts.length} atomic posts found</p>
         <input
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search posts..."
         />
-        <button>Clear posts</button>
+        <button onClick={onClearPosts}>Clear posts</button>
       </div>
     </header>
   );
