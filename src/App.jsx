@@ -25,19 +25,24 @@ function App() {
 
   return (
     <section>
-      <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      <Header
+        posts={searchedPosts}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+      />
       <Main posts={searchedPosts} />
     </section>
   );
 }
 
-function Header({ searchQuery, setSearchQuery }) {
+function Header({ posts, searchQuery, setSearchQuery }) {
   return (
     <header>
       <h1>
         <span>⚛️</span>The Atomic Blog
       </h1>
       <div>
+        <p>🚀 {posts.length} atomic posts found</p>;
         <input
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
