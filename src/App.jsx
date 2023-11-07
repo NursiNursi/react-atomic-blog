@@ -1,3 +1,12 @@
+function App() {
+  return (
+    <section>
+      <Header />
+      <Main />
+    </section>
+  );
+}
+
 function Header() {
   return (
     <header>
@@ -51,15 +60,6 @@ function List() {
         </p>
       </li>
     </ul>
-  );
-}
-
-function App() {
-  return (
-    <section>
-      <Header />
-      <Main />
-    </section>
   );
 }
 
