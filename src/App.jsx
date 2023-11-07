@@ -12,23 +12,37 @@ function App() {
   const [posts, setposts] = useState(() =>
     Array.from({ length: 32 }, () => createRandomPost())
   );
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const searchedPosts =
+    searchQuery.length > 0
+      ? posts.filter((post) =>
+          `${post.title} ${post.body}`
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase())
+        )
+      : posts;
 
   return (
     <section>
-      <Header />
-      <Main posts={posts} />
+      <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      <Main posts={searchedPosts} />
     </section>
   );
 }
 
-function Header() {
+function Header({ searchQuery, setSearchQuery }) {
   return (
     <header>
       <h1>
         <span>⚛️</span>The Atomic Blog
       </h1>
       <div>
-        <input placeholder="Search posts..." />
+        <input
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search posts..."
+        />
         <button>Clear posts</button>
       </div>
     </header>
