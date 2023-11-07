@@ -1,8 +1,22 @@
+import { faker } from "@faker-js/faker";
+import { useState } from "react";
+
+function createRandomPost() {
+  return {
+    title: `${faker.hacker.adjective()} ${faker.hacker.noun()}`,
+    body: faker.hacker.phrase(),
+  };
+}
+
 function App() {
+  const [posts, setposts] = useState(() =>
+    Array.from({ length: 32 }, () => createRandomPost())
+  );
+
   return (
     <section>
       <Header />
-      <Main />
+      <Main posts={posts} />
     </section>
   );
 }
@@ -21,11 +35,11 @@ function Header() {
   );
 }
 
-function Main() {
+function Main({ posts }) {
   return (
     <main>
       <FormAddPost />
-      <Posts />
+      <Posts posts={posts} />
     </main>
   );
 }
@@ -40,25 +54,23 @@ function FormAddPost() {
   );
 }
 
-function Posts() {
+function Posts({ posts }) {
   return (
     <section>
-      <List />
+      <List posts={posts} />
     </section>
   );
 }
 
-function List() {
+function List({ posts }) {
   return (
     <ul>
-      <li>
-        <h3>Title</h3>
-        <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Cum corrupti
-          tempore aut vitae sed modi, debitis optio dolorem! Ipsum dolor ea cum
-          placeat aliquam at libero culpa eius nostrum fugit?
-        </p>
-      </li>
+      {posts.map((post, i) => (
+        <li key={i}>
+          <h3>{post.title}</h3>
+          <p>{post.body}</p>
+        </li>
+      ))}
     </ul>
   );
 }
