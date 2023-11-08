@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function createRandomPost() {
   return {
@@ -13,6 +13,7 @@ function App() {
     Array.from({ length: 32 }, () => createRandomPost())
   );
   const [searchQuery, setSearchQuery] = useState("");
+  const [isFakeDark, setIsFakeDark] = useState(false);
 
   const searchedPosts =
     searchQuery.length > 0
@@ -31,8 +32,22 @@ function App() {
     setPosts((posts) => [post, ...posts]);
   }
 
+  // Whenever `isFakeDark` changes, we toggle the `fake-dark-mode` class on the HTML element (see in "Elements" dev tool).
+  useEffect(
+    function () {
+      document.documentElement.classList.toggle("fake-dark-mode");
+    },
+    [isFakeDark]
+  );
+
   return (
     <section>
+      <button
+        onClick={() => setIsFakeDark((isFakeDark) => !isFakeDark)}
+        className="btn-fake-dark-mode"
+      >
+        {isFakeDark ? "☀️" : "🌙"}
+      </button>
       <Header
         posts={searchedPosts}
         onClearPosts={handleClearPosts}
