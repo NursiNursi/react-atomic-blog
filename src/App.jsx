@@ -8,12 +8,41 @@ function createRandomPost() {
   };
 }
 
+// const postsFromLocalStorage = JSON.parse(localStorage.getItem("posts") || []);
+const storedPosts = localStorage.getItem("posts");
+const postsFromLocalStorage = storedPosts ? JSON.parse(storedPosts) : {};
+
 function App() {
-  const [posts, setPosts] = useState(() =>
-    Array.from({ length: 32 }, () => createRandomPost())
-  );
+  const initialState = () => {
+    return postsFromLocalStorage.length
+      ? postsFromLocalStorage
+      : Array.from({ length: 32 }, () => createRandomPost());
+  };
+
+  // const initialState = () => {
+  //   if (postsFromLocalStorage.length) {
+  //     return postsFromLocalStorage;
+  //   } else {
+  //     return Array.from({ length: 32 }, () => createRandomPost());
+  //   }
+  // };
+
+  const [posts, setPosts] = useState(initialState);
+  // const [posts, setPosts] = useState(postsFromLocalStorage);
+  // const [posts, setPosts] = useState(() =>
+  //   Array.from({ length: 32 }, () => createRandomPost())
+  // );
   const [searchQuery, setSearchQuery] = useState("");
   const [isFakeDark, setIsFakeDark] = useState(false);
+
+  console.log(localStorage);
+
+  useEffect(
+    function () {
+      localStorage.setItem("posts", JSON.stringify(posts));
+    },
+    [posts]
+  );
 
   const searchedPosts =
     searchQuery.length > 0
@@ -129,7 +158,7 @@ function Posts({ posts }) {
 function List({ posts }) {
   return (
     <ul>
-      {posts.map((post, i) => (
+      {posts?.map((post, i) => (
         <li key={i}>
           <h3>{post.title}</h3>
           <p>{post.body}</p>
